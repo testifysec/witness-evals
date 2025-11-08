@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Training outputs
+checkpoints/
+*.pth
+*.bin
+*.safetensors
+witness-llama-*/
+witness-mistral-*/
+*-lora/
+*-qlora/
+output_dir/
+wandb/
+
+# Dataset splits (generated)
+data/train.jsonl
+data/val.jsonl
+data/witness-train.jsonl
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

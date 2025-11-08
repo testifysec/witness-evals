@@ -1,0 +1,196 @@
+# Witness Evals Registry
+# Defines all evaluations for the Witness attestation framework
+
+metadata:
+  version: "0.1.0"
+  description: "Training dataset for fine-tuning models on Witness attestation framework"
+  license: "Apache-2.0"
+  repository: "https://github.com/in-toto/go-witness"
+
+attestors:
+  # Core attestors with examples
+  - name: "commandrun"
+    type: "https://witness.dev/attestations/command-run/v0.1"
+    description: "Executes and attests command execution with optional process tracing"
+    examples: 6
+    dataset: "data/attestors/commandrun.jsonl"
+    fields:
+      - cmd: "Command executed as array of strings"
+      - stdout: "Standard output from command"
+      - stderr: "Standard error from command"
+      - exitcode: "Process exit code"
+      - processes: "Array of process info (when tracing enabled)"
+
+  - name: "git"
+    type: "https://witness.dev/attestations/git/v0.1"
+    description: "Captures git repository state and commit information"
+    examples: 5
+    dataset: "data/attestors/git.jsonl"
+    fields:
+      - commithash: "Current commit SHA"
+      - branch: "Current branch name"
+      - author: "Commit author name"
+      - authoremail: "Commit author email"
+      - committername: "Committer name"
+      - committeremail: "Committer email"
+      - signature: "GPG signature if present"
+      - status: "Working directory status"
+      - remotes: "Remote URLs (credentials redacted)"
+      - tags: "Tags pointing to current commit"
+
+  - name: "environment"
+    type: "https://witness.dev/attestations/environment/v0.1"
+    description: "Captures system environment and variables"
+    examples: 3
+    dataset: "data/attestors/environment.jsonl"
+    fields:
+      - os: "Operating system (linux, darwin, windows)"
+      - hostname: "System hostname"
+      - username: "Current user"
+      - variables: "Environment variables map"
+
+  - name: "material"
+    type: "https://witness.dev/attestations/material/v0.1"
+    description: "Records input files before command execution"
+    examples: 3
+    dataset: "data/attestors/material-product.jsonl"
+    fields:
+      - "[filename]": "Map of filenames to digest sets"
+
+  - name: "product"
+    type: "https://witness.dev/attestations/product/v0.1"
+    description: "Records output files after command execution"
+    examples: 3
+    dataset: "data/attestors/material-product.jsonl"
+    fields:
+      - "[filename]": "Map of filenames to digest sets"
+
+  # Attestors that need examples
+  - name: "aws-iid"
+    type: "https://witness.dev/attestations/aws-iid/v0.1"
+    description: "AWS EC2 instance identity document"
+    examples: 0
+    todo: true
+
+  - name: "aws-codebuild"
+    type: "https://witness.dev/attestations/aws-codebuild/v0.1"
+    description: "AWS CodeBuild environment information"
+    examples: 0
+    todo: true
+
+  - name: "gcp-iit"
+    type: "https://witness.dev/attestations/gcp-iit/v0.1"
+    description: "GCP identity token"
+    examples: 0
+    todo: true
+
+  - name: "github"
+    type: "https://witness.dev/attestations/github/v0.1"
+    description: "GitHub Actions environment"
+    examples: 0
+    todo: true
+
+  - name: "gitlab"
+    type: "https://witness.dev/attestations/gitlab/v0.1"
+    description: "GitLab CI environment"
+    examples: 0
+    todo: true
+
+  - name: "jenkins"
+    type: "https://witness.dev/attestations/jenkins/v0.1"
+    description: "Jenkins environment"
+    examples: 0
+    todo: true
+
+  - name: "docker"
+    type: "https://witness.dev/attestations/docker/v0.1"
+    description: "Docker daemon information"
+    examples: 0
+    todo: true
+
+  - name: "oci"
+    type: "https://witness.dev/attestations/oci/v0.1"
+    description: "OCI container image information"
+    examples: 0
+    todo: true
+
+  - name: "sbom"
+    type: "https://witness.dev/attestations/sbom/v0.1"
+    description: "Software Bill of Materials"
+    examples: 0
+    todo: true
+
+  - name: "vex"
+    type: "https://witness.dev/attestations/vex/v0.1"
+    description: "Vulnerability Exploitability eXchange"
+    examples: 0
+    todo: true
+
+  - name: "sarif"
+    type: "https://witness.dev/attestations/sarif/v0.1"
+    description: "Static Analysis Results Interchange Format"
+    examples: 0
+    todo: true
+
+policies:
+  - name: "basic-policy"
+    description: "Simple single-step policy"
+    examples: 1
+    dataset: "data/policies/policy-creation.jsonl"
+
+  - name: "multi-step-policy"
+    description: "Build → Test → Package pipeline"
+    examples: 1
+    dataset: "data/policies/policy-creation.jsonl"
+
+  - name: "rego-policy"
+    description: "Policy with embedded Rego rules"
+    examples: 1
+    dataset: "data/policies/policy-creation.jsonl"
+
+workflows:
+  - name: "github-actions"
+    description: "GitHub Actions workflow with Witness"
+    examples: 1
+    dataset: "data/workflows/ci-cd-workflows.jsonl"
+
+  - name: "container-build"
+    description: "Docker container build attestation"
+    examples: 1
+    dataset: "data/workflows/ci-cd-workflows.jsonl"
+
+statistics:
+  total_examples: 22
+  covered_attestors: 5
+  total_attestors: 21
+  coverage_percentage: 24
+
+  examples_by_category:
+    attestors: 17
+    policies: 3
+    workflows: 2
+    security: 0
+
+targets:
+  phase_1:
+    description: "Core attestors and basic workflows"
+    target_examples: 50
+    target_attestors: ["commandrun", "git", "environment", "material", "product"]
+    status: "complete"
+
+  phase_2:
+    description: "CI/CD and cloud attestors"
+    target_examples: 100
+    target_attestors: ["github", "gitlab", "aws-iid", "gcp-iit", "jenkins"]
+    status: "pending"
+
+  phase_3:
+    description: "Container and security attestors"
+    target_examples: 150
+    target_attestors: ["oci", "docker", "sbom", "vex", "sarif", "secretscan"]
+    status: "pending"
+
+  phase_4:
+    description: "Security scenarios and adversarial examples"
+    target_examples: 200
+    status: "pending"
