@@ -39,3 +39,9 @@ Thumbs.db
 # Logs
 *.log
 logs/
+venv-mlx/
+data/verified/example1/
+debug-verify/
+scripts/tmp-success/
+*.log
+witness-llama-*/
