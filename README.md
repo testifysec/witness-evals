@@ -59,10 +59,22 @@ All training examples follow the OpenAI fine-tuning format (JSONL with messages)
 
 ## Current Dataset Stats
 
+### Verified Dataset (PRIMARY - Production Ready)
+- **Total examples**: 10,000 ✅
+- **Verification**: 100% passed `witness verify`
+- **File size**: 26 MB
+- **Attestors covered**: 15 combinations
+- **Quality**: Formally verified
+
+### Synthetic Dataset
+- **Total examples**: 10,000
+- **File size**: 20 MB
+- **Quality**: Programmatically generated
+
+### Manual Dataset (Baseline)
 - **Total examples**: 22
 - **Attestors covered**: commandrun, git, environment, material, product
-- **Policy examples**: 3
-- **Workflow examples**: 2
+- **Quality**: Hand-crafted
 
 ### Coverage by Category
 
